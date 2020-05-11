@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/css/auth.css')
+  body
+    block content
+      h1= title
+      form(method='post')
+        .container
+          label(for='uname')
+            b Username
+          input(type='text' placeholder='Enter Username' name='uname' required='')
+          label(for='tel')
+            b Tel number
+          input(type='tel' placeholder='Enter Phone Number' name='tel' required='' pattern="[0-9]{12}" maxlength="12")
+          button(type='submit') Login
+          label
+            input(type='checkbox' name='remember')
+            |  Remember me
+

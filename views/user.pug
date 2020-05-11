@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    title Game
+    link(rel='stylesheet', href='/css/user.css')
+    script(src='https://unpkg.com/axios/dist/axios.min.js')
+    script(src='/js/dx.js')
+  body
+    block content
+      h1 Play Game
+      div#currentUserId(hidden)= id
+      .main
+        label(for="userName") User
+        input#userName(type="text" value=name readonly)
+        br
+        label(for="urlText") URL
+        input#urlText(type="text" value=url readonly)
+        .ulr-buttons
+          button(class='url-action'  onclick="copyUrl()") Copy Url
+          button(class='url-action'  onclick="deactivateUrl()") Deactivate Url
+          button(class='url-action'  onclick="generateUrl()") Generate Url
+        .container
+          .game-buttons
+            button(class='game-action' onclick="play()") Get Lucky
+            button(class='game-action' onclick="history()") History
+          .game-panel
+    script(src="/js/user.js")

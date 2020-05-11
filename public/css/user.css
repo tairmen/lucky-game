@@ -1,0 +1,75 @@
+h1 {
+  text-align: center;
+}
+.container {
+  border: 1px solid #b6b6b6;
+  border-radius: 5px;
+  margin: 20px;
+}
+.main {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  margin-top: 20px;
+  max-width: 600px;
+}
+#urlText {
+  margin: 5px 10px;
+  width: 60%;
+  font-size: 16px;
+  padding: 5px;
+}
+#userName {
+  margin: 5px 10px;
+  font-size: 16px;
+  width: 60%;
+  padding: 5px;
+}
+.ulr-buttons {
+  margin: 10px;
+}
+.url-action {
+  background-color: #eeeeee;
+  padding: 10px;
+  margin: 8px;
+  border: none;
+  cursor: pointer;
+  transition-duration: 0.3s;
+}
+.url-action:hover {
+  background-color: #adadad;
+  color: white;
+}
+.game-buttons {
+  margin: 10px;
+}
+.game-action {
+  background-color: #cecece;
+  padding: 15px 40px;
+  margin: 15px;
+  border: 1px solid #333333;
+  cursor: pointer;
+  transition-duration: 0.3s;
+}
+.game-action:hover {
+  background-color: #5c5c5c;
+  color: white;
+}
+.game-panel {
+  margin: 20px;
+  min-height: 160px;
+}
+.game-panel table {
+  border-collapse: collapse;
+}
+.game-panel td,
+.game-panel th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+.game-panel thead {
+  font-weight: bold;
+}
+

@@ -1,0 +1,54 @@
+h1 {
+  text-align: center;
+}
+.users-table td,
+.users-table th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+.users-table thead {
+  font-weight: bold;
+}
+.users-table tbody {
+  cursor: pointer;
+}
+.users-table tbody :hover {
+  background-color: #d6d6d6;
+}
+.users-table {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+}
+.users-table table {
+  border-collapse: collapse;
+}
+.del-button {
+  background-color: #e4d4d4;
+  padding: 2px 4px;
+  margin: 2px;
+  border: 1px solid #333333;
+  cursor: pointer;
+  transition-duration: 0.3s;
+}
+.del-button:hover {
+  background-color: #000000;
+  color: white;
+}
+.buttons {
+  text-align: center;
+}
+.add-user {
+  background-color: #f7f7f7;
+  padding: 10px 20px;
+  margin: 8px;
+  border: 1px solid #333333;
+  cursor: pointer;
+  transition-duration: 0.3s;
+}
+.add-user:hover {
+  background-color: #adadad;
+  color: white;
+}
