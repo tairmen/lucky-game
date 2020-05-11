@@ -15,7 +15,13 @@ function onReady() {
       html += `<tr ondblclick='rowClick(this)' id="${el.id}">`;
       for (let prop in el) {
         if (prop != "id") {
-          html += `<td>${el[prop]}</td>`;
+          if (prop == "created" || prop == "updated") {
+            let date = new Date(el[prop]);
+            let strDate = date.toLocaleString();
+            html += `<td>${strDate}</td>`;
+          } else {
+            html += `<td>${el[prop]}</td>`;
+          }
         }
       }
       html += `<td><button id="del${el.id}" class="del-button" onclick="delUser(this)">DEL</button></td>`;
@@ -38,7 +44,6 @@ async function delUser(btn) {
     let element = document.getElementById(strId);
     element.parentNode.removeChild(element);
   }
-
 }
 
 function addUser() {
