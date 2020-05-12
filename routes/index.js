@@ -38,7 +38,7 @@ deleteRoute = (path) => {
 
 checkActive = (id, callback = () => {}) => {
   db.any(
-    `SELECT * FROM users WHERE id=${id} and created <= (CURRENT_TIMESTAMP - ${INTERVAL})`
+    `SELECT * FROM users WHERE id=${id} and created <= (CURRENT_TIMESTAMP - ${INTERVAL}) and id!=1`
   )
     .then((data) => {
       if (data.length > 0) {
