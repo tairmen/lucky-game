@@ -13,6 +13,15 @@ const db = pgp(
   `postgres://${database.user}:${database.password}@${database.host}:${database.port}/${database.name}`
 );
 
+let adminURL;
+db.one("SELECT url FROM users WHERE id=1")
+  .then(function (data) {
+    adminURL = data.url;
+  })
+  .catch(function (error) {
+    console.log("ERROR:", error);
+  });
+
 const uuid = () =>
   "xxxxxxxx-xxxx-4xxx".replace(/[xy]/g, (c, r) =>
     ("x" == c ? (r = (Math.random() * 16) | 0) : (r & 0x3) | 0x8).toString(16)
@@ -21,11 +30,11 @@ const uuid = () =>
 const INTERVAL = "7 * interval '1 day'";
 
 deleteRoute = (path) => {
-  let ind = router.stack.findIndex(el => {
+  let ind = router.stack.findIndex((el) => {
     return el.route.path == `/${path}`;
   });
   router.stack.splice(ind, 1);
-}
+};
 
 checkActive = (id, callback = () => {}) => {
   db.any(
@@ -69,7 +78,7 @@ db.any("SELECT * FROM users WHERE active=TRUE")
   .then(function (data) {
     data.forEach((el) => {
       router.get(`/${el.url}`, function (req, res, next) {
-        if (el.url == "admin") {
+        if (el.id == 1) {
           res.render("admin");
         } else {
           checkActive(el.id, (active, err) => {
@@ -99,10 +108,7 @@ router.get("/", function (req, res, next) {
 router.post("/", function (req, res, next) {
   let name = req.body.uname;
   let tel = req.body.tel;
-  db.any("SELECT * FROM users WHERE tel=$1 and name=$2", [
-    tel,
-    name,
-  ])
+  db.any("SELECT * FROM users WHERE tel=$1 and name=$2", [tel, name])
     .then(function (data) {
       // console.log('finded:', data);
       if (data.length == 0) {
@@ -140,9 +146,11 @@ router.post("/", function (req, res, next) {
       } else {
         checkActive(data[0].id, (active, err) => {
           if (active) {
-            if (!router.stack.find(el => {
-              return el.route.path == `/${data[0].url}`;
-            })) {
+            if (
+              !router.stack.find((el) => {
+                return el.route.path == `/${data[0].url}`;
+              })
+            ) {
               router.get(`/${data[0].url}`, function (req, res, next) {
                 res.render("user", {
                   name: data[0].name,
@@ -301,19 +309,48 @@ router.post("/edit", function (req, res, next) {
   let data = req.body;
   // console.log(data);
   if (data.id) {
-    db.none(
-      "UPDATE users SET name=$1, tel=$2, url=$3, updated=$4, active=$5 WHERE id=$6",
-      [
-        data.uname,
-        data.tel,
-        data.url,
-        new Date().toISOString(),
-        data.active,
-        data.id,
-      ]
-    )
-      .then(function () {
-        res.redirect("/admin");
+    db.one("SELECT url FROM users WHERE id=$1", data.id)
+      .then(function (user) {
+        deleteRoute(user.url);
+        db.none(
+          "UPDATE users SET name=$1, tel=$2, url=$3, updated=$4, active=$5 WHERE id=$6",
+          [
+            data.uname,
+            data.tel,
+            data.url,
+            new Date().toISOString(),
+            data.active,
+            data.id,
+          ]
+        )
+          .then(function () {
+            if (data.id == 1) {
+              adminURL = data.url;
+              router.get(`/${data.url}`, function (req, res, next) {
+                adminURL = data.url;
+                res.render("admin");
+              });
+            } else {
+              router.get(`/${data.url}`, function (req, res, next) {
+                checkActive(el.id, (active, err) => {
+                  if (active) {
+                    res.render("user", {
+                      name: data.name,
+                      tel: data.tel,
+                      url: data.url,
+                      id: data.id,
+                    });
+                  } else {
+                    res.render("error", err);
+                  }
+                });
+              });
+            }
+            res.redirect(`/${adminURL}`);
+          })
+          .catch(function (error) {
+            console.log("ERROR:", error);
+          });
       })
       .catch(function (error) {
         console.log("ERROR:", error);
@@ -324,7 +361,7 @@ router.post("/edit", function (req, res, next) {
       [data.uname, data.tel, data.url, data.active]
     )
       .then(function () {
-        res.redirect("/admin");
+        res.redirect(`/${adminURL}`);
       })
       .catch(function (error) {
         console.log("ERROR:", error);

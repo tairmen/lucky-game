@@ -24,7 +24,9 @@ function onReady() {
           }
         }
       }
-      html += `<td><button id="del${el.id}" class="del-button" onclick="delUser(this)">DEL</button></td>`;
+      if (el.id != 1) {
+        html += `<td><button id="del${el.id}" class="del-button" onclick="delUser(this)">DEL</button></td>`;
+      }    
       html += "</tr>";
     });
     html += "</tbody></table>";
